@@ -13,7 +13,3 @@ COPY /app /app
 
 # Command our Docker container will run to generate a submission CSV
 CMD ["python3", "/app/my_testing_script.py"]
-
-
-
-
