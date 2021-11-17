@@ -19,17 +19,25 @@ What this script does:
 
 import pickle
 import random
+import Ember_Wrapper
+import xgboost as xgb
+import numpy as np
+import pandas as pd
 
 class MyClassifier:
 
     def __init__(self):
         # good place to load my awesome model here
+        self.model = xgb.Booster()
+        self.model.load_model("xgb_model.txt")
 
     def predict(self,data):
+        data['category'] = 1
+        X, y = Ember_Wrapper.create_vectorize_features(data)
 
         # good place to do whatever data transformations we need
         # ... here we don't need the data b/c we're just guessing the answer
-
+        prediction = self.model.predict(X)
         # good place to have a model.predict() kind of call
-        prediction = random.choice([0,1]) # random guess model
+        # prediction = random.choice([0,1]) # random guess model
         return(prediction)

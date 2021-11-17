@@ -88,14 +88,14 @@ Here we call on the 'my_inference_model.py' script to perform our inference code
 def make_predictions(test_data):
 
     model = MyClassifier() # refer to 'my_inference_model.py' for our example model object
-    all_results = []
-    for i,sample in test_data.iterrows():
-        result = {}
-        result['sha256'] = sample['sha256']
-        result['data_type'] = sample['data_type']
-        result['pred'] = model.predict(sample)
-        all_results.append(result)
-
+    all_results = test_data[['sha256', 'data_type']]
+    # for i,sample in test_data.iterrows():
+        # result = {}
+        # result['sha256'] = sample['sha256']
+        # result['data_type'] = sample['data_type']
+        # result['pred'] = model.predict(sample)
+        # all_results.append(result)
+    all_results['pred'] = model.predict(test_data)
     return all_results
 
 '''
@@ -107,9 +107,9 @@ Two important things here:
 '''
 def save_results(all_results):
 
-    output_dir = os.environ['OUTPUT_SUBMISSION_PATH']
-
-    all_results = pd.DataFrame(all_results)
+    # output_dir = os.environ['OUTPUT_SUBMISSION_PATH']
+    output_dir = '.'
+    # all_results = pd.DataFrame(all_results)
     all_results.to_csv(f"{output_dir}/submission.csv",index=False)
 
 
