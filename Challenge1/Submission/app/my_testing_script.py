@@ -42,9 +42,11 @@ Again, just three steps your solution needs to perform:
 3) Save your predictions as a CSV called "submission.csv"
 '''
 def main():
-
+    #these 2 lines they set, we set to test
+    # os.environ['EMBER_RAW_DATA_PATH'] = './raw_train.xlsx'
+    # os.environ['OUTPUT_SUBMISSION_PATH'] = '.'
     # Step 1) load the test data
-    test_data = load_test_data(data_type_requested="ember_flat")
+    test_data = load_test_data(data_type_requested="ember_raw")
 
     # Step 2) perform inference on the test data
     all_results = make_predictions(test_data)
@@ -67,16 +69,15 @@ submission file path can be found via system environment variables:
 'OUTPUT_SUBMISSION_PATH' - where your "submission.csv" file should go
  '''
 def load_test_data(data_type_requested):
-
+#change to excel from csv input
     if data_type_requested=='ember_raw':
         ember_test_data_path = os.environ['EMBER_RAW_DATA_PATH'] # this ENV var is where our data is
-        data = pd.read_csv(ember_test_data_path)
+        data = pd.read_excel(ember_test_data_path)
         data['data_type'] = 'ember_raw'
-
-    elif data_type_requested=='ember_flat':
-        ember_test_data_path = os.environ['EMBER_FLAT_DATA_PATH'] # this ENV var is where our data is
-        data = pd.read_csv(ember_test_data_path)
-        data['data_type'] = 'ember_flat'
+    # elif data_type_requested=='ember_flat':
+    #     ember_test_data_path = os.environ['EMBER_FLAT_DATA_PATH'] # this ENV var is where our data is
+    #     data = pd.read_csv(ember_test_data_path)
+    #     data['data_type'] = 'ember_flat'
 
     return data
 
@@ -88,7 +89,7 @@ Here we call on the 'my_inference_model.py' script to perform our inference code
 def make_predictions(test_data):
 
     model = MyClassifier() # refer to 'my_inference_model.py' for our example model object
-    all_results = test_data[['sha256', 'data_type']]
+    all_results = test_data[['sha256', 'data_type']].copy()
     # for i,sample in test_data.iterrows():
         # result = {}
         # result['sha256'] = sample['sha256']
@@ -96,6 +97,8 @@ def make_predictions(test_data):
         # result['pred'] = model.predict(sample)
         # all_results.append(result)
     all_results['pred'] = model.predict(test_data)
+    all_results['pred'] = all_results['pred'].astype(int)
+
     return all_results
 
 '''
@@ -107,8 +110,8 @@ Two important things here:
 '''
 def save_results(all_results):
 
-    # output_dir = os.environ['OUTPUT_SUBMISSION_PATH']
-    output_dir = '.'
+    output_dir = os.environ['OUTPUT_SUBMISSION_PATH']
+
     # all_results = pd.DataFrame(all_results)
     all_results.to_csv(f"{output_dir}/submission.csv",index=False)
 
