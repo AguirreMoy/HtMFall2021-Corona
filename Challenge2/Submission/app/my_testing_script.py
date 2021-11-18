@@ -43,17 +43,24 @@ Again, just three steps your solution needs to perform:
 '''
 def main():
     #these 2 lines they set, we set to test
-    # os.environ['EMBER_RAW_DATA_PATH'] = './raw_train.xlsx'
-    # os.environ['OUTPUT_SUBMISSION_PATH'] = '.'
+    os.environ['EMBER_RAW_DATA_PATH'] = './raw_train.xlsx'
+    os.environ['OUTPUT_SUBMISSION_PATH'] = '.'
     # Step 1) load the test data
-    test_data = load_test_data(data_type_requested="ember_raw")
+    initial_tick = time.time()
 
+    tick = time.time()
+    test_data = load_test_data(data_type_requested="ember_raw")
+    tock = time.time()
+    #time spent loading data
+    print('Time spent loading data:', tock-tick)
     # Step 2) perform inference on the test data
     all_results = make_predictions(test_data)
 
     # Step 3) save your inference results to a csv
     save_results(all_results)
 
+    final_tock = time.time()
+    print('Total time:', final_tock-initial_tick)
 #####################
 # UTILITY FUNCTIONS #
 #####################
@@ -113,7 +120,7 @@ def save_results(all_results):
     output_dir = os.environ['OUTPUT_SUBMISSION_PATH']
 
     # all_results = pd.DataFrame(all_results)
-    all_results.to_csv(f"{output_dir}/submission.csv",index=False)
+    all_results.to_excel(f"{output_dir}/submission.xlsx",index=False)
 
 
 # we're just going to run the main() function when this script is called by the Dockerfile

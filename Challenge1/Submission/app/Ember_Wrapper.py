@@ -56,5 +56,3 @@ def create_vectorize_features(df, feature_version = 2, path = './'):
     X = np.array(X)
     y = np.array(y)
     return X, y
-    # np.save(X_path, X)
-    # np.save(y_path, y)

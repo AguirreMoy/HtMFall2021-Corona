@@ -1,5 +1,5 @@
 from ember.features import PEFeatureExtractor
-from ast import literal_eval 
+from ast import literal_eval
 import numpy as np
 import os
 
@@ -12,7 +12,7 @@ def cast_string_to_obj(str_dict):
     return str_dict
 
 def fix_imports( imports ):
-    # import feature data is broken this attemps to save as much data as possible 
+    # import feature data is broken this attemps to save as much data as possible
     try:
         colon_index = imports.rfind(":")
         if colon_index > 0:
@@ -26,13 +26,13 @@ def fix_imports( imports ):
     except:
         return {}
 
-    
+
 def create_vectorize_features(df, feature_version = 2, path = './'):
    # Use ember to vetorize the fetures from the DataFrame
-   # conver every row in the dataframe to a vectorized features 
+   # conver every row in the dataframe to a vectorized features
 
     extractor = PEFeatureExtractor(feature_version)
-    
+
     X_path = os.path.join(os.path.abspath(path), 'X_data.npy')
     y_path = os.path.join(os.path.abspath(path), 'y_data.npy')
 
@@ -55,5 +55,4 @@ def create_vectorize_features(df, feature_version = 2, path = './'):
 
     X = np.array(X)
     y = np.array(y)
-    np.save(X_path, X)
-    np.save(y_path, y)
+    return X, y

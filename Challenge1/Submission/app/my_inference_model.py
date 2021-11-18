@@ -16,27 +16,37 @@ What this script does:
 2) Make a prediction on the whole dataset at once
 '''
 import Ember_Wrapper
-import xgboost as xgb
+# import xgboost as xgb
 import numpy as np
 import pandas as pd
+import time
+import pickle
 
 class MyClassifier:
 
     def __init__(self):
         # good place to load my awesome model here
-        self.model = xgb.Booster()
-        self.model.load_model("xgb_model.txt")
+        # self.model = xgb.Booster()
+        self.model = pickle.load(open('xgb_model.pkl', "rb"))
 
     def predict(self,data):
         data['category'] = 1
+
+        tick = time.time()
         X, y = Ember_Wrapper.create_vectorize_features(data)
-        print(X.shape)
-        X = xgb.DMatrix(X)
+        # X = np.load('./X_data.npy')
+        tock = time.time()
+        print('Time spent for ember wrapper:', tock-tick)
+
+        # X = xgb.DMatrix(X)
 
         # good place to do whatever data transformations we need
         # ... here we don't need the data b/c we're just guessing the answer
+        tick = time.time()
         prediction = self.model.predict(X)
-        prediction = (prediction > 0.6622)
+        tock = time.time()
+        print('Time spent for inference:', tock-tick)
+        prediction = (prediction > 0.354)
         #reference EMBER_roland.ipynb to see how we calculated the threshold
 
 
