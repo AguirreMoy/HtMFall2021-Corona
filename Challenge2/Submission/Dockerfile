@@ -4,8 +4,7 @@ FROM python:3.8-slim-buster
 # Working directory
 WORKDIR /app
 # COPY our /app files into the image and requirements
-COPY /app /app
-COPY requirements.txt requirements.txt
+COPY requirements.txt /app /app
 
 #Installing dependencies # Install any Python dependecies we need
 

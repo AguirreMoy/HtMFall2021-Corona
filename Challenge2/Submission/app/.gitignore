@@ -1,0 +1,6 @@
+__pychache__/
+.ipynb_checkpoints/
+*.pyc
+*.pyo
+submission.csv
+submission.xlsx
